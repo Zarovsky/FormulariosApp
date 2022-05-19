@@ -1,16 +1,49 @@
 import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dinamicos',
   templateUrl: './dinamicos.component.html',
-  styles: [
-  ]
+  styles: [],
 })
-export class DinamicosComponent implements OnInit {
+export class DinamicosComponent {
+  miFormulario: FormGroup = this.fb.group({
+    nombre: [, [Validators.required, Validators.minLength(3)]],
+    favoritos: this.fb.array([
+      ['metal gear', Validators.required],
+      ['Spanish Incident']
+    ],Validators.required)
+  });
 
-  constructor() { }
+  get favoritosArr() {
+    // esto es para extraer el array de favoritos
+    // para el ngFor del html y no tener que montar allí
+    // let favorito of miFormulario.controls.favoritos.controls
+    return this.miFormulario.get('favoritos') as FormArray;
 
-  ngOnInit(): void {
   }
 
+  constructor(private fb: FormBuilder) {}
+
+  campoNoValido(campo: string) {
+    return (
+      this.miFormulario.controls.nombre.errors &&
+      this.miFormulario.controls.nombre.touched
+    );
+  }
+
+  guardar() {
+    if (this.miFormulario.invalid) {
+      // si queremos que se muestren todos los errores cuando se pulse
+      // el botón guardar, deben cumplirse las condiciones
+      // que tenemos en campoNoValido
+      // Hay una propiedad para marcar como touched todos los campos
+      this.miFormulario.markAllAsTouched();
+      return;
+    }
+
+    console.log(this.miFormulario.value);
+    // limpiamos todos los campos
+    this.miFormulario.reset();
+  }
 }
