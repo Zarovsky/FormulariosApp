@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-dinamicos',
@@ -14,6 +15,10 @@ export class DinamicosComponent {
       ['Spanish Incident']
     ],Validators.required)
   });
+  // otro control enlazado con el input de agregar
+  // pero al no pertenecer a miFormulario, se enlaza
+  // mediante [formControl]
+  nuevoFavorito: FormControl = this.fb.control('',Validators.required);
 
   get favoritosArr() {
     // esto es para extraer el array de favoritos
@@ -24,6 +29,25 @@ export class DinamicosComponent {
   }
 
   constructor(private fb: FormBuilder) {}
+
+  agregarFavorito() {
+    if (this.nuevoFavorito.invalid) { return; }
+
+    // lo agregamos al array de miFormulario Favoritos
+    // aprovechamos el get que siempre se pasan los objetos
+    // por referencia
+    // this.favoritosArr.push( new FormControl(this.nuevoFavorito.value, Validators.required));
+    // lo mismo pero conel formBuilder (fb)
+    this.favoritosArr.push(this.fb.control(this.nuevoFavorito.value, Validators.required));
+
+    // ahora borramos el valor del input que ya lo tenemos
+    this.nuevoFavorito.reset();
+  }
+
+  eliminar(index: number) {
+    this.favoritosArr.removeAt(index);
+  }
+
 
   campoNoValido(campo: string) {
     return (

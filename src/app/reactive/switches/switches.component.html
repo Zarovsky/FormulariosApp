@@ -1,7 +1,7 @@
 <h2>Reactive: <small>Switches</small></h2>
 <hr />
 
-<form>
+<form [formGroup]="miFormulario" (ngSubmit)="guardar()">
   <!-- Radios -->
   <div class="row mb-3">
     <label class="col-sm-3 col-form-label">Género</label>
@@ -11,7 +11,7 @@
           class="form-check-input"
           type="radio"
           value="M"
-          name="radioGenero"
+          formControlName="genero"
           id="radioMasculino"
         />
         <label class="form-check-label" for="radioMasculino"> Masculino </label>
@@ -22,7 +22,7 @@
           class="form-check-input"
           type="radio"
           value="F"
-          name="radiogenero"
+          formControlName="genero"
           id="radiofemenino"
         />
         <label class="form-check-label" for="radiofemenino"> Femenino </label>
@@ -38,6 +38,7 @@
         <input
           class="form-check-input"
           type="checkbox"
+          formControlName="notificaciones"
           id="flexSwitchCheckChecked"
         />
         <label class="form-check-label" for="flexSwitchCheckChecked"
@@ -55,6 +56,7 @@
         <input
           class="form-check-input"
           type="checkbox"
+          formControlName="condiciones"
           id="flexCheckDefault"
         />
         <label class="form-check-label" for="flexCheckDefault">
@@ -67,14 +69,14 @@
   <!-- Boton -->
   <div class="row">
     <div class="col">
-      <button class="btn btn-primary float-end">
+      <button type="submit" class="btn btn-primary float-end">
         Guardar
       </button>
 
     </div>
   </div>
 </form>
-<!--
+
 <h5>Valor del formulario</h5>
 <pre>{{ miFormulario.value | json }}</pre>
 <br>
@@ -83,6 +85,7 @@
 <br>
 <h5>Valid</h5>
 <pre>{{ miFormulario.valid }}</pre>
+<!--
 <br>
 <h5>Términos</h5>
 <pre>{{ miFormulario.controls?.terminos?.errors | json }}</pre>
